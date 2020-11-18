@@ -1,0 +1,25 @@
+images:
+  default:
+    botfront: 'botfront/botfront:v0.27.5'
+    botfront-api: 'botfront/botfront-api:v0.27.5'
+    rasa: 'botfront/rasa-for-botfront:v1.10.16-bf.1'
+    duckling: 'botfront/duckling:latest'
+    mongo: 'mongo:latest'
+    actions: 'rasa/rasa-sdk:1.10.1'
+    ner-service: 'ner-service:0.2'
+  current:
+    botfront: 'botfront/botfront:v0.27.5'
+    botfront-api: 'botfront/botfront-api:v0.27.5'
+    rasa: 'botfront/rasa-for-botfront:v1.10.16-bf.1'
+    duckling: 'botfront/duckling:latest'
+    mongo: 'mongo:latest'
+    actions: 'rasa/rasa-sdk:1.10.1'
+    ner-service: 'ner-service:0.2'
+
+env:
+  bf_project_id: bf
+  bf_url: 'http://botfront:3000/graphql'
+  root_url: 'http://localhost:8888'
+  augmentation_factor: 50
+  mongo_url: 'mongodb://mongo:27017/bf'
+version: 0.27.5
