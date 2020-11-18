@@ -19,3 +19,11 @@ RUN python -m spacy link en_core_web_md en
 
 # Switch back to non-root to run code
 #USER 1001
+
+# change shell
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# the entry point
+EXPOSE 5005
+ENTRYPOINT ["rasa"]
+CMD ["run", "--enable-api", "--debug"]
