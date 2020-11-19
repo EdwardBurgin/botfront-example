@@ -14,6 +14,7 @@ from rasa.nlu.classifiers.diet_classifier import DIETClassifier
 from rasa.nlu.classifiers.keyword_intent_classifier import KeywordIntentClassifier
 from rasa.nlu.classifiers.mitie_intent_classifier import MitieIntentClassifier
 from rasa.nlu.classifiers.sklearn_intent_classifier import SklearnIntentClassifier
+from rasa.nlu.classifiers.ed_classifier import flask_serving_classifier
 from rasa.nlu.classifiers.embedding_intent_classifier import EmbeddingIntentClassifier
 from rasa.nlu.extractors.crf_entity_extractor import CRFEntityExtractor
 from rasa.nlu.extractors.duckling_http_extractor import DucklingHTTPExtractor
@@ -49,6 +50,7 @@ from rasa.utils.tensorflow.constants import (
     ENTITY_RECOGNITION,
     NUM_TRANSFORMER_LAYERS,
 )
+
 
 if typing.TYPE_CHECKING:
     from rasa.nlu.components import Component
@@ -92,6 +94,7 @@ component_classes = [
     KeywordIntentClassifier,
     DIETClassifier,
     EmbeddingIntentClassifier,
+    flask_serving_classifier,
     # selectors
     ResponseSelector,
 ]

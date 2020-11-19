@@ -13,6 +13,7 @@ USER root
 
 COPY ./extensions/nlu/registry.py /opt/venv/lib/python3.7/site-packages/rasa/nlu/
 COPY ./extensions/nlu/extractors/custom_spacy_entity_extractor_remote.py /opt/venv/lib/python3.7/site-packages/rasa/nlu/extractors/
+COPY ./extensions/nlu/classifiers/ed_classifier.py /opt/venv/lib/python3.7/site-packages/rasa/nlu/classifiers
 
 RUN python -m spacy download en_core_web_md
 RUN python -m spacy link en_core_web_md en
