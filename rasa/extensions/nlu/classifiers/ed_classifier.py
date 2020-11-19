@@ -127,7 +127,7 @@ class flask_serving_classifier(Component):
         logger.warn("ED CLASSIFIER PROCESS MESSAGE:")
         print('FLASK PROCESS PRINT')
         print('ED message', message)
-        X = message.get(TEXT)
+        X = [message.get(TEXT)]
         intent_ids, probabilities = self.predict(X)
         intents = self.transform_labels_num2str(np.ravel(intent_ids))
         # `predict` returns a matrix as it is supposed
