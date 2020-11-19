@@ -110,7 +110,6 @@ class flask_serving_classifier(Component):
 #             print('ED TRAIN DATA:', training_data.intent_examples[0])
 
             X = [i.get(TEXT) for i in training_data.intent_examples]
-
             categories = [i for i in set(y)]
             host = '185.190.206.134'
             port = 9000
@@ -187,7 +186,7 @@ class flask_serving_classifier(Component):
 
         classifier_file_name = file_name + "_classifier.pkl"
         encoder_file_name = file_name + "_encoder.pkl"
-        if self.clf and self.le:
+        if self.le:
             io_utils.json_pickle(
                 os.path.join(model_dir, encoder_file_name), self.le.classes_
             )
