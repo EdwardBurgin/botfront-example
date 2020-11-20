@@ -2,3 +2,4 @@
 ./botfront-db
 ./models
 .idea
+*.pyc
