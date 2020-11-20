@@ -43,7 +43,7 @@ class RemoteSpacyCustomNER(EntityExtractor):
            data train the classifier."""
 
         if not training_data.entity_examples:
-            logger.wa(
+            logger.debug(
                 "No training examples with entities present. Skip training"
                 "of 'RemoteSpacyCustomNER'."
             )
