@@ -1,6 +1,10 @@
+import requests
+import logging
 from rasa.nlu.extractors.extractor import EntityExtractor
 from typing import Any, Dict, List, Text, Optional, Type
 from rasa.nlu.constants import ENTITIES, TEXT, INTENT
+
+logger = logging.getLogger(__name__)
 
 
 class RemoteSpacyCustomNER(EntityExtractor):
@@ -37,13 +41,20 @@ class RemoteSpacyCustomNER(EntityExtractor):
         """Load the sentiment polarity labels from the text
            file, retrieve training tokens and after formatting
            data train the classifier."""
+
+        if not training_data.entity_examples:
+            logger.wa(
+                "No training examples with entities present. Skip training"
+                "of 'RemoteSpacyCustomNER'."
+            )
+            return
+
         entities = []
         texts = []
-        for example in training_data.entity_examples:
+        for example in training_data.intent_examples:
             texts.append(example.get(TEXT))
             entities.append(example.get(ENTITIES))
 
-        import requests
         url = 'http://{0}:{1}/train'.format(self.component_config.get('host'),
                                             self.component_config.get('port'))
         data = {"text": texts, "entities": entities, "params": [self.component_config]}
@@ -52,7 +63,6 @@ class RemoteSpacyCustomNER(EntityExtractor):
     def process(self, message, **kwargs):
         """Retrieve the tokens of the new message, pass it to the classifier
             and append prediction results to the message class."""
-        import requests
         url = 'http://{0}:{1}/predict'.format(self.component_config.get('host'),
                                               self.component_config.get('port'))
         data = {"text": [message.get(TEXT)]}
