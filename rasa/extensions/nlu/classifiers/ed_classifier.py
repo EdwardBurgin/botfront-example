@@ -17,11 +17,12 @@ from rasa.nlu.training_data.message import Message
 #################
 import requests
 
-
-print('ED CLASSIFIER v2')
+FLASK_SERVER_IP = os.getenv('flask_server_ip')
+FLASK_SERVER_PORT = os.getenv('flask_server_port')
 
 logger = logging.getLogger(__name__)
-
+logger.warn(f'ED CLASSIFIER V5 env ip {FLASK_SERVER_IP} port: {FLASK_SERVER_PORT}')
+logger.warn(str(os.environ))
 if typing.TYPE_CHECKING:
     import sklearn
 
@@ -90,7 +91,7 @@ class flask_serving_classifier(Component):
         # type: (TrainingData, RasaNLUModelConfig, **Any) -> None
         """Train the intent classifier on a data set."""
         logger.warn("ED CLASSIFIER TRAIN")
-        print('ED CLASSIFIER PRINT TRAIN!')
+        
         num_threads = kwargs.get("num_threads", 1)
 
         labels = [e.get("intent")
@@ -111,13 +112,12 @@ class flask_serving_classifier(Component):
 
             X = [i.get(TEXT) for i in training_data.intent_examples]
             categories = [i for i in set(y)]
-            host = '185.190.206.134'
-            port = 9000
-            url = f'http://{host}:{port}/train'
+
+            url = f'http://{FLASK_SERVER_IP}:{FLASK_SERVER_PORT}/train'
             data = {'text': X, 'labels': y, 'unique_labels': categories}
-            print('ED DATA', data)
+            logger.warn(f'USING url: {FLASK_SERVER_IP} port:{FLASK_SERVER_PORT}')
             tr = requests.put(url, json=data)  ###train
-            print(tr.json())
+            
             # self.clf = self._create_classifier(num_threads, y)
             # self.clf.fit(X, y)
 
@@ -125,8 +125,6 @@ class flask_serving_classifier(Component):
         # type: (Message, **Any) -> None
         """Return the most likely intent and its probability for a message."""
         logger.warn("ED CLASSIFIER PROCESS MESSAGE:")
-        print('FLASK PROCESS PRINT')
-        print('ED message', message)
         X = [message.get(TEXT)]
         intent_ids, probabilities = self.predict(X)
         intents = self.transform_labels_num2str(np.ravel(intent_ids))
@@ -158,9 +156,7 @@ class flask_serving_classifier(Component):
         :param X: bow of input text
         :return: vector of probabilities containing one entry for each label"""
         data = {'text': X,'labels':[], 'unique_labels':[]}
-        host = '185.190.206.134'
-        port = 9000
-        url = f'http://{host}:{port}/predict'
+        url = f'http://{FLASK_SERVER_IP}:{FLASK_SERVER_PORT}/predict'
         pred = requests.post(url, json=data)
         out = np.array(pred.json()['prediction'])
         return out

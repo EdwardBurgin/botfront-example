@@ -26,5 +26,14 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # the entry point
 EXPOSE 5005
+
+ARG FLASK_SERVER_PORT
+ARG FLASK_SERVER_IP
+
+ENV flask_server_ip=${FLASK_SERVER_IP}
+ENV flask_server_port=${FLASK_SERVER_PORT}
+
+# EXPOSE ${FLASK_SERVER_PORT}
+
 ENTRYPOINT ["rasa"]
 CMD ["run", "--enable-api", "--debug"]
