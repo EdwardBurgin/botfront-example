@@ -38,6 +38,8 @@ services:
       context: ./rasa
       args:
         RASA_IMAGE: ${IMAGES_CURRENT_RASA}
+        FLASK_SERVER_IP: ${IMAGES_CURRENT_FLASK_SERVER_IP}
+        FLASK_SERVER_PORT: 9000
     container_name: botfront-rasa
     networks: ["botfront-network"]
     restart: always
@@ -99,6 +101,16 @@ services:
       - ./ner-training:/app/project-ner/training
       - ./ner-training:/app/project-ner/corpus
       - ./ner-training:/app/project-ner/metrics
+    env_file:
+      - .env
+
+  classification-service:
+    image: classification-service
+    container_name: custom-classification
+    networks: [ "botfront-network" ]
+    restart: always
+    ports:
+      - "9000:9000"
     env_file:
       - .env
 
