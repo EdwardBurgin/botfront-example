@@ -68,13 +68,15 @@ class RemoteSpacyCustomNER(EntityExtractor):
         data = {"text": [message.get(TEXT)]}
         response = requests.get(url, json=data)
         json_response = response.json()
-        all_extracted = self.add_extractor_name(json_response['entities'][0])
-        dimensions = self.component_config["dimensions"]
-        extracted = RemoteSpacyCustomNER.filter_irrelevant_entities(
-            all_extracted, dimensions
-        )
+        extracted = json_response['entities']
 
-        message.set(ENTITIES, message.get(ENTITIES, []) + extracted, add_to_output=True)
+        if len(extracted) > 0:
+            all_extracted = self.add_extractor_name(json_response['entities'][0])
+            dimensions = self.component_config["dimensions"]
+            extracted = RemoteSpacyCustomNER.filter_irrelevant_entities(
+                all_extracted, dimensions
+            )
+            message.set(ENTITIES, message.get(ENTITIES, []) + extracted, add_to_output=True)
 
     def persist(self, file_name, model_dir):
         """Pass because a pre-trained model is already persisted"""
