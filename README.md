@@ -56,16 +56,3 @@ pipeline:
       rasa_addons.nlu.components.intent_ranking_canonical_example_injector.IntentRankingCanonicalExampleInjector
   - name: EntitySynonymMapper
 ```
-
-**Note**: The classifier is integrated as remote service 
-(disable the VPN if any). Make sure that the service is running at-
-```json
-host = '185.190.206.134'
-port = 9000
-```
-
-We can also confirm the same using curl-
-```bash
-$curl curl 185.190.206.134:9000/train
-```
-The expected output is- `{"message": {"text": "No text provided"}}`
