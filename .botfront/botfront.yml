@@ -21,7 +21,7 @@ images:
 env:
   bf_project_id: bf
   bf_url: 'http://botfront:3000/graphql'
-  root_url: 'http://185.190.206.134:8888'
+  root_url: 'http://localhost:8888'
   augmentation_factor: 50
   mongo_url: 'mongodb://mongo:27017/bf'
   images_current_flask_server_port: 9000
