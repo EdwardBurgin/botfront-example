@@ -103,7 +103,7 @@ class ActionLanguageSelect(Action):
                     logger.info('There is no multilingual response for intent:{0}, '
                                 'in language:{1}. Running online translation.'.format(intent, lang))
                     if lang == 'zh':
-                        # Change the language to 'zh' to 'zh-cn', as google translate is not supported with zh
+                        # Change the language from 'zh' to 'zh-cn', as google translate is not supported with zh
                         lang = "{}-cn".format(lang)
                     response_translated = GoogleTranslator(source='en', target=lang).translate(response_default)
                     dispatcher.utter_message(text=response_translated)
