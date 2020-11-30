@@ -8,6 +8,7 @@ from rasa_sdk.knowledge_base.storage import InMemoryKnowledgeBase
 from rasa_sdk.knowledge_base.actions import ActionQueryKnowledgeBase
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
+from deep_translator import GoogleTranslator
 import json
 import random
 from typing import Any, Text, Dict, List
@@ -82,6 +83,7 @@ class ActionLanguageSelect(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         # print(tracker.latest_message)
+        # print(tracker.events)
         intent = tracker.latest_message['intent'].get('name')
         input_text = tracker.latest_message['text']
         lang = language_detection.predict_lang(input_text)
@@ -90,6 +92,16 @@ class ActionLanguageSelect(Action):
             logger.info('Multilingual Response:{0}'.format(response))
             dispatcher.utter_message(text=response)
         else:
-            logger.info('There is no multilingual response for intent:{0}, '
-                        'in language:{1}'.format(intent, lang))
+            utter_intent = "utter_{}".format(intent)
+            response_default = domain.get('responses').get(utter_intent)[0].get('text')
+            if response_default:
+                if lang == 'en':
+                    logger.info('Setting default response for the intent:{0}, '
+                                'in language:{1}.'.format(intent, lang))
+                    dispatcher.utter_message(text=response_default)
+                else:
+                    logger.info('There is no multilingual response for intent:{0}, '
+                                'in language:{1}. Running online translation.'.format(intent, lang))
+                    response_translated = GoogleTranslator(source='en', target=lang).translate(response_default)
+                    dispatcher.utter_message(text=response_translated)
         return []
